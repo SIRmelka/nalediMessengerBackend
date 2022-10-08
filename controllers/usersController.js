@@ -1,5 +1,7 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
+const jwt = require('jwt-simple') 
+const config = require('../config')
 
 exports.getAll = (req,res)=>{
 
@@ -28,15 +30,26 @@ exports.logIn = (req,res)=>{
             res.status(401).json("mail or username incorect")
         }
         else{
+
+            const playload = {
+                id: user.id,
+                name: user.firstName+" "+user.lastName,
+                expire: Date.now() + 1000 * 60 * 60 * 24 * 7
+            }
+            const token = jwt.encode(playload,config.jwtSecret)
+
             bcrypt.compare(req.body.password,user.password)
+
             .then((valid)=>{
-                !valid?
-                res.status(401).json("invalid password or username"):
-                delete user.password
-                res.status(200).json({
+                if(!valid) res.status(401).json("invalid password or username")
+                else{
+                    delete user.password
+                    res.status(200).json({
                     userId:user.id,
-                    token:"asdkjasjdqwi123123nknase12312380"
+                    token:`Bearer ${token}`
                 })
+                }
+                
             })
         }
 

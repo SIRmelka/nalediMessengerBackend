@@ -2,6 +2,7 @@ const { Router } = require('express')
 const express = require('express')
 const route = express.Router()
 const users = require('../controllers/usersController')
+const passport = require('passport')
 
 route.get('/',users.getAll)
 

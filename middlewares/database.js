@@ -6,6 +6,6 @@ mongoose.connect(process.env.DB_URI,{
     useUnifiedTopology:true
 })
 .then(()=>{console.log('Access granted');})
-.catch(()=>console.log('Access denied',process.env.DB_URI))
+.catch(()=>console.log('Access denied'))
 
 module.exports = mongoose

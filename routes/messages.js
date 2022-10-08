@@ -5,8 +5,15 @@ const Message = require('../models/messageModel')
 const route = express.Router()
 
 route.get('/', (req,res)=>{
-    // const message
-    res.json('success')
+    Message.find()
+    .then( messages => res.status(200).json(messages))
+    .catch(err => res.status(401).json(err))
+})
+
+route.get('/discussions', (req,res)=>{
+    Message.find({$or:[{"from.firstName":"god"},{"to.firstName":"god"}]})
+    .then( messages => res.status(200).json(messages))
+    .catch(err => res.status(401).json(err))
 })
 
 route.post('/', (req,res)=>{

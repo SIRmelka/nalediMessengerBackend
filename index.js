@@ -22,7 +22,7 @@ app.get('/authenticate',restrictor,(req,res)=>{
         id: req.user._id
     })
 })
-app.use('/user/', users)
+app.use('/users/', users)
 app.use('/api/messages/',restrictor, messages)
 
 app.listen(3001, ()=>{

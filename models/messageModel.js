@@ -2,16 +2,16 @@ const mongoose = require('../middlewares/database')
 
 const Message = mongoose.Schema({
     from: {
-        _id:{type:String},
-        firstName : {type:String},
-        lastName : {type:String},
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user',
+        require:true
     },
-    to: {
-        _id:{type:String},
-        firstName : {type:String},
-        lastName : {type:String},
+    to:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'user',
+        required:true
     },
-    message: {type:String},
+    message: {type:String,required:true},
     media:{type:String},
     date: {type:Date},
     seen: {type:Boolean}

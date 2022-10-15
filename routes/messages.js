@@ -5,8 +5,9 @@ const Message = require('../controllers/messagesController')
 const route = express.Router()
 
 route.get('/',Message.getAll)
+route.delete('/',Message.deleteAll)
 
-route.post('/newmessage',Message.createMessage)
+route.post('/newmessage/:conversationId',Message.createMessage)
 route.get('/conversations',Message.getConversations)
 route.get('/conversation/:id',Message.getOneConversation)
 

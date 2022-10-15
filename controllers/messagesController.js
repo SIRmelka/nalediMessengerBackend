@@ -12,24 +12,28 @@ exports.getAll =  (req,res)=>{
     .catch(err => res.status(500).json(err))
 
 
-    // Message.deleteMany()
-    // .then( messages => res.status(200).json(messages))
-    // .catch(err => res.status(401).json(err))
+    
+  
     
 }
-
-
+exports.deleteAll = (req,res)=>{
+    Message.deleteMany()
+    .then( messages => res.status(200).json(messages))
+    .catch(err => res.status(401).json(err))
+}
 
 exports.createMessage = async (req,res)=>{
 
     const message = await Message.create({
-        from:"633f2bcc4d0fbd0cd7745252",
-        to:"633f2bcc4d0fbd0cd7745252",
-        message:"Salut, je ne viens pas aujourdhui",
-
+        from:req.query.from,
+        to:req.query.to,
+        message: req.body.message,
+        media: req.body.media,
+        date: Date.now(),
+        seen:false
     })
 
-    Conversation.findOne({_id:'63482015842e88e7fbf44eb0'})
+    Conversation.findOne({_id:req.params.conversationId})
     .then(async (conversation)=>{
         
             console.log('message added');
@@ -42,25 +46,25 @@ exports.createMessage = async (req,res)=>{
             res.status(200).json(message)
         
         
-    })
+    }) 
     .catch((err) => {
-        res.status(404).json({error:err})
+        const conversation =     Conversation({
+        users:[req.query.from,req.query.to],
+        messages:[message.id]
     })
-    // const conversation = new Conversation({
-    //     users:["633f2bcc4d0fbd0cd7745252","633f2bcc4d0fbd0cd7745252"],
-    //     messages:["6347f713c5827af7c88ba654"]
-    // })
 
-    // conversation.save()
-    // .then( messages => res.status(200).json(messages))
-    // .catch(err => res.status(500).json(err))
+    conversation.save()
+    .then( messages => res.status(200).json(messages))
+    .catch(err => res.status(500).json(err))
 
+    })
+    
 }
 
 exports.getConversations = (req,res)=>{
     Conversation.find({sort:{'created_at':-1}})
-    .populate({path:'users',select:"firstName lastName"})
-    .populate({path:'messages',select:"from message media date seen",options:{limit:4,sort:{'date':1}}})
+    .populate({path:'users',select:"firstName lastName profile"})
+    .populate({path:'messages',select:"from message media date seen",options:{sort:{'date':1}}})
     .then( messages => res.status(200).json(messages))
     .catch(err => res.status(500).json(err))
 }

@@ -11,9 +11,6 @@ exports.getAll =  (req,res)=>{
     .then( messages => res.status(200).json(messages))
     .catch(err => res.status(500).json(err))
 
-
-    
-  
     
 }
 exports.deleteAll = (req,res)=>{
@@ -59,6 +56,32 @@ exports.createMessage = async (req,res)=>{
 
     })
     
+}
+
+exports.findOrCreate = (req,res)=>{
+    Conversation.findOne({$and:[
+        {users: {$in:req.query.firstUser}},
+        {users: {$in:req.query.secondUser}}
+    ]})
+    .then( (messages) => {
+        if(!messages){
+            const conversation =     Conversation({
+                users:[req.query.firstUser,req.query.secondUser],
+            })
+
+            conversation.save()
+            .then(conv => res.status(201).json({message: "new conversation",conv}))
+           
+        }
+        else{
+            res.status(200).json(messages)
+        }
+       
+    })
+    .catch((err) => {
+        res.status(500).json(err)
+    })
+
 }
 
 exports.getConversations = (req,res)=>{

@@ -14,7 +14,10 @@ exports.getAll =  (req,res)=>{
     
 }
 exports.deleteAll = (req,res)=>{
-    Message.deleteMany()
+    // Message.deleteMany()
+    // .then( messages => res.status(200).json(messages))
+    // .catch(err => res.status(401).json(err))
+    Conversation.deleteMany()
     .then( messages => res.status(200).json(messages))
     .catch(err => res.status(401).json(err))
 }
@@ -31,8 +34,8 @@ exports.createMessage = async (req,res)=>{
     })
 
     Conversation.findOne({_id:req.params.conversationId})
-    .then(async (conversation)=>{
-        
+    .then(
+        async (conversation)=>{
             console.log('message added');
             Conversation.updateOne({_id:conversation._id},{
                 $push:{messages:message.id}
@@ -70,7 +73,7 @@ exports.findOrCreate = (req,res)=>{
             })
 
             conversation.save()
-            .then(conv => res.status(201).json({message: "new conversation",conv}))
+            .then(conv => res.status(201).json({message: "new conversation",_id:conv._id,conv,}))
            
         }
         else{
@@ -85,7 +88,8 @@ exports.findOrCreate = (req,res)=>{
 }
 
 exports.getConversations = (req,res)=>{
-    Conversation.find({sort:{'created_at':-1}})
+    Conversation.find()
+    .sort({'updatedAt':-1})
     .populate({path:'users',select:"firstName lastName profile"})
     .populate({path:'messages',select:"from message media date seen",options:{sort:{'date':1}}})
     .then( messages => res.status(200).json(messages))

@@ -24,6 +24,8 @@ app.get('/authenticate',restrictor,(req,res)=>{
 })
 app.use('/users/', users)
 app.use('/api/messages/',restrictor, messages)
+ 
+
 
 app.listen(3001, ()=>{
     console.log('server running on port 3001');

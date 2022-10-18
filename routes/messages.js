@@ -10,7 +10,6 @@ route.delete('/',Message.deleteAll)
 route.post('/newmessage/:conversationId',Message.createMessage)
 route.get('/conversations',Message.getConversations)
 route.get('/conversation/:id',Message.getOneConversation)
-
 route.get('/startDiscussion', Message.findOrCreate)
 
 // route.post('/', (req,res)=>{

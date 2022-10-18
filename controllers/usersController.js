@@ -71,7 +71,10 @@ exports.signIn = (req,res)=>{
         )
         user.save()
         .then(user => res.status(200).json(user.firstName+' added successfully'))
-        .catch(err => res.status(403).json('can not add that user',err))
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err)
+        })
 
     })
     

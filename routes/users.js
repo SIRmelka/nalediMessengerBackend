@@ -8,7 +8,7 @@ route.get('/',users.getAll)
 
 route.get('/:id',users.getOne)
 
-route.post('/signin',users.signIn)
+route.post('/signup',users.signIn)
 
 route.post('/login',users.logIn)
 

@@ -55,7 +55,9 @@ exports.logIn = (req,res)=>{
                     delete user.password
                     res.status(200).json({
                     userId:user.id,
-                    token:`Bearer ${token}`
+                    token:`Bearer ${token}`,
+                    profile:user.profile,
+                    username:user.firstName
                 })
                 }
                 

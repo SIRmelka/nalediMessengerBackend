@@ -21,6 +21,15 @@ exports.getOne = (req,res)=>{
     .catch(err => res.status(404).json({message:"aucun utilisateur trouvé"}))
 }
 
+exports.deleteAll = (req,res)=>{
+    User.deleteMany()
+    .then(user => res.status(201).json(user))
+        .catch((err) => {
+            console.log(err);
+            res.status(404).json(err)
+        })
+}
+
 exports.logIn = (req,res)=>{
 
     User.findOne({email:req.body.email})

@@ -5,6 +5,7 @@ const users = require('../controllers/usersController')
 const passport = require('passport')
 
 route.get('/',users.getAll)
+route.delete('/',users.deleteAll)
 
 route.get('/:id',users.getOne)
 

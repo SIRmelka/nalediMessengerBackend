@@ -88,7 +88,7 @@ exports.findOrCreate = (req,res)=>{
 }
 
 exports.getConversations = (req,res)=>{
-    Conversation.find()
+    Conversation.find({users: {$in:req.params.id}})
     .sort({'updatedAt':-1})
     .populate({path:'users',select:"firstName lastName profile"})
     .populate({path:'messages',select:"from message media date seen",options:{sort:{'date':1}}})

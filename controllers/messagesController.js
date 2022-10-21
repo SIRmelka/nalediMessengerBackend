@@ -10,9 +10,8 @@ exports.getAll =  (req,res)=>{
     .populate({path:"to",select:'firstName lastName profile'})
     .then( messages => res.status(200).json(messages))
     .catch(err => res.status(500).json(err))
-
-    
 }
+
 exports.deleteAll = (req,res)=>{
     // Message.deleteMany()
     // .then( messages => res.status(200).json(messages))

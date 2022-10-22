@@ -1,5 +1,6 @@
 const Message = require('../models/messageModel')
 const Conversation = require('../models/conversationModel')
+const cloudinary = require('../middlewares/cloudinary')
 
 
 
@@ -23,6 +24,22 @@ exports.deleteAll = (req,res)=>{
 
 exports.createMessage = async (req,res)=>{
 
+    let uploadResult = " ";
+    console.log("hey",req.body.media);
+
+    if (req.body.media!=="") {
+    try {
+        console.log("heyhey");
+      const response = await cloudinary.uploader.upload(req.body.media, {
+        upload_preset: "sirMelka",
+      });
+    //   uploadResult = response.public_id;
+    console.log('response',response);
+    } catch (err) {
+      return res.send(err);
+    }
+  }
+
     const message = await Message.create({
         from:req.query.from,
         to:req.query.to,
@@ -40,10 +57,8 @@ exports.createMessage = async (req,res)=>{
                 $push:{messages:message.id}
             })
             .then(console.log('conversation updated'))
-            
 
             res.status(200).json(message)
-        
         
     }) 
     .catch((err) => {

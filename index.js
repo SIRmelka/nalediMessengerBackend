@@ -35,7 +35,7 @@ app.use(express.json());
 app.use(passport.initialize());
 
 const restrictor = passport.authenticate("jwt", { session: false });
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json("Welcome to naledi messenger api");
 });
 app.use("/users/", users);
